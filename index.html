@@ -1,1 +1,125 @@
-.
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IMPERA</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div id="loading">
+
+    <h1 class="logo">
+        IMPERA
+    </h1>
+
+    <p class="subtitle">
+        Grand Strategy Game
+    </p>
+
+</div>
+
+
+<div id="mainMenu">
+
+    <div class="menuBox">
+
+        <h1 class="gameTitle">
+            IMPERA
+        </h1>
+
+        <p class="gameSubtitle">
+
+            Build your Empire.
+            Rule the World.
+
+        </p>
+
+        <button onclick="newGame()">
+
+            Yeni Oyun
+
+        </button>
+
+        <button onclick="continueGame()">
+
+            Devam Et
+
+        </button>
+
+        <button onclick="openSettings()">
+
+            Ayarlar
+
+        </button>
+
+        <button onclick="openCredits()">
+
+            Hakkında
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<div id="countrySelect">
+
+    <h1>
+
+        Ülkeni Seç
+
+    </h1>
+
+    <div class="countries">
+
+        <button onclick="chooseCountry('Türkiye')">
+            🇹🇷 Türkiye
+        </button>
+
+        <button onclick="chooseCountry('Almanya')">
+            🇩🇪 Almanya
+        </button>
+
+        <button onclick="chooseCountry('Fransa')">
+            🇫🇷 Fransa
+        </button>
+
+        <button onclick="chooseCountry('İtalya')">
+            🇮🇹 İtalya
+        </button>
+
+        <button onclick="chooseCountry('İngiltere')">
+            🇬🇧 Birleşik Krallık
+        </button>
+
+        <button onclick="chooseCountry('Rusya')">
+            🇷🇺 Rusya
+        </button>
+
+        <button onclick="chooseCountry('Amerika')">
+            🇺🇸 ABD
+        </button>
+
+        <button onclick="chooseCountry('Japonya')">
+            🇯🇵 Japonya
+        </button>
+
+    </div>
+
+</div>
+
+
+<script src="js/script.js"></script>
+
+</body>
+
+</html>
