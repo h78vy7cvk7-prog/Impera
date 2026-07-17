@@ -1358,3 +1358,141 @@ document.addEventListener("DOMContentLoaded", () => {
         "IMPERA Alpha 0.3 başarıyla yüklendi."
     );
 });
+/* =====================================================
+   SVG HARİTA SİSTEMİ
+===================================================== */
+
+let mapScale = 1;
+let mapX = 0;
+let mapY = 0;
+
+let dragging = false;
+let dragStartX = 0;
+let dragStartY = 0;
+
+function initializeSVGMap() {
+
+    const viewport = document.getElementById("mapViewport");
+    const layer = document.getElementById("mapTransformLayer");
+    const status = document.getElementById("mapStatus");
+
+    if (!viewport || !layer) return;
+
+    function updateTransform() {
+        layer.style.transform =
+            `translate(${mapX}px, ${mapY}px) scale(${mapScale})`;
+    }
+
+    document.getElementById("zoomInBtn")?.addEventListener("click", () => {
+        mapScale += 0.15;
+
+        if (mapScale > 3)
+            mapScale = 3;
+
+        updateTransform();
+    });
+
+    document.getElementById("zoomOutBtn")?.addEventListener("click", () => {
+
+        mapScale -= 0.15;
+
+        if (mapScale < 0.6)
+            mapScale = 0.6;
+
+        updateTransform();
+
+    });
+
+    document.getElementById("resetMapBtn")?.addEventListener("click", () => {
+
+        mapScale = 1;
+        mapX = 0;
+        mapY = 0;
+
+        updateTransform();
+
+    });
+
+
+    viewport.addEventListener("pointerdown", e => {
+
+        dragging = true;
+
+        dragStartX = e.clientX - mapX;
+        dragStartY = e.clientY - mapY;
+
+        viewport.classList.add("dragging");
+
+    });
+
+
+    window.addEventListener("pointermove", e => {
+
+        if (!dragging) return;
+
+        mapX = e.clientX - dragStartX;
+        mapY = e.clientY - dragStartY;
+
+        updateTransform();
+
+    });
+
+
+    window.addEventListener("pointerup", () => {
+
+        dragging = false;
+
+        viewport.classList.remove("dragging");
+
+    });
+
+
+    const svgObject =
+        document.getElementById("europeMapObject");
+
+    if (svgObject) {
+
+        svgObject.addEventListener("load", () => {
+
+            if (status) {
+
+                status.textContent =
+                    "Avrupa haritası yüklendi.";
+
+                status.classList.add("loaded");
+
+            }
+
+        });
+
+        svgObject.addEventListener("error", () => {
+
+            if (status) {
+
+                status.textContent =
+                    "Harita yüklenemedi.";
+
+                status.classList.add("error");
+
+            }
+
+        });
+
+    }
+
+    updateTransform();
+
+}
+
+
+/* Sayfa tamamen açılınca */
+
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        initializeSVGMap();
+
+    }, 300);
+
+});
