@@ -1,852 +1,182 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    >
-
-    <meta
-        name="description"
-        content="IMPERA — Tarayıcı tabanlı büyük strateji oyunu"
-    >
-
-    <meta name="theme-color" content="#080b11">
-
-    <title>IMPERA — Grand Strategy Game</title>
-
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="IMPERA — Tarayıcı tabanlı büyük strateji oyunu">
+  <meta name="theme-color" content="#080b11">
+  <title>IMPERA — Grand Strategy Game</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
+  <section id="loading" aria-label="Oyun yükleniyor">
+    <h1 class="logo">IMPERA</h1>
+    <p class="subtitle">Grand Strategy Game</p>
+  </section>
 
-    <!-- =====================================================
-         YÜKLEME EKRANI
-         ===================================================== -->
-
-    <section id="loading" aria-label="Oyun yükleniyor">
-
-        <h1 class="logo">
-            IMPERA
-        </h1>
-
-        <p class="subtitle">
-            Grand Strategy Game
-        </p>
-
+  <main id="mainMenu" class="screen active">
+    <section class="menuBox">
+      <p class="menu-version">Alpha 0.4</p>
+      <h1 class="gameTitle">IMPERA</h1>
+      <p class="gameSubtitle">İmparatorluğunu kur.<br>Tarihin yönünü değiştir.</p>
+      <button type="button" data-action="new-game">Yeni Oyun</button>
+      <button type="button" data-action="continue-game">Devam Et</button>
+      <button type="button" data-action="settings">Ayarlar</button>
+      <button type="button" data-action="credits">Hakkında</button>
     </section>
+  </main>
 
+  <section id="countrySelect" class="screen">
+    <header class="country-select-header">
+      <button type="button" class="screen-back-button" data-action="main-menu">← Ana Menü</button>
+      <div>
+        <p class="screen-eyebrow">1 Ocak 1936</p>
+        <h1>Ülkeni Seç</h1>
+        <p class="country-select-description">Avrupa'daki devletlerden birini seç ve tarihin yönünü değiştir.</p>
+      </div>
+    </header>
+    <div class="country-filter-bar">
+      <input id="countrySearch" type="search" placeholder="Ülke ara..." autocomplete="off">
+      <select id="regionFilter" aria-label="Bölge filtresi">
+        <option value="all">Tüm Avrupa</option>
+        <option value="western">Batı Avrupa</option>
+        <option value="central">Orta Avrupa</option>
+        <option value="northern">Kuzey Avrupa</option>
+        <option value="southern">Güney Avrupa</option>
+        <option value="eastern">Doğu Avrupa</option>
+        <option value="balkans">Balkanlar</option>
+      </select>
+    </div>
+    <div id="countries" class="countries"></div>
+  </section>
 
-    <!-- =====================================================
-         ANA MENÜ
-         ===================================================== -->
+  <section id="countryConfirmation" class="screen">
+    <button type="button" class="screen-back-button confirmation-back" data-action="country-select">← Ülke Seçimine Dön</button>
+    <div id="confirmationContent"></div>
+  </section>
 
-    <main id="mainMenu">
+  <section id="gameScreen" class="screen">
+    <header class="game-topbar">
+      <div class="topbar-country">
+        <span id="playerFlag" class="topbar-flag">🇹🇷</span>
+        <div>
+          <strong id="playerCountryName">Türkiye</strong>
+          <small id="playerGovernment">Cumhuriyet</small>
+        </div>
+      </div>
 
-        <section class="menuBox">
+      <div class="topbar-resources">
+        <div class="resource-item"><span>💰</span><div><small>Hazine</small><strong id="treasuryValue">120</strong></div></div>
+        <div class="resource-item"><span>🏭</span><div><small>Sanayi</small><strong id="industryValue">32</strong></div></div>
+        <div class="resource-item"><span>👥</span><div><small>Nüfus</small><strong id="populationValue">17M</strong></div></div>
+        <div class="resource-item"><span>⚔️</span><div><small>Ordu</small><strong id="armyValue">38</strong></div></div>
+        <div class="resource-item"><span>⭐</span><div><small>İstikrar</small><strong id="stabilityValue">72%</strong></div></div>
+      </div>
 
-            <p class="menu-version">
-                Alpha 0.3
-            </p>
+      <button type="button" class="game-menu-button" data-action="pause-menu" aria-label="Oyun menüsü">☰</button>
+    </header>
 
-            <h1 class="gameTitle">
-                IMPERA
-            </h1>
+    <div class="game-layout">
+      <aside class="nation-panel">
+        <div class="leader-portrait"><span id="leaderSymbol">★</span></div>
+        <p class="panel-label">Devlet Başkanı</p>
+        <h2 id="leaderName">Mustafa Kemal Atatürk</h2>
+        <div class="nation-stat-list">
+          <div><span>Başkent</span><strong id="capitalName">Ankara</strong></div>
+          <div><span>Rejim</span><strong id="governmentName">Cumhuriyet</strong></div>
+          <div><span>İdeoloji</span><strong id="ideologyName">Ulusal Kalkınma</strong></div>
+          <div><span>Diplomatik Güç</span><strong id="diplomacyPower">45</strong></div>
+        </div>
+        <div class="national-focus">
+          <span>Ulusal Hedef</span>
+          <strong id="nationalFocus">Sanayileşme Hamlesi</strong>
+          <div class="focus-progress"><span id="focusProgress"></span></div>
+          <small id="focusDays">70 gün kaldı</small>
+        </div>
+      </aside>
 
-            <p class="gameSubtitle">
-                İmparatorluğunu kur.<br>
-                Tarihin yönünü değiştir.
-            </p>
-
-            <button
-                type="button"
-                onclick="newGame()"
-            >
-                Yeni Oyun
-            </button>
-
-            <button
-                type="button"
-                onclick="continueGame()"
-            >
-                Devam Et
-            </button>
-
-            <button
-                type="button"
-                onclick="openSettings()"
-            >
-                Ayarlar
-            </button>
-
-            <button
-                type="button"
-                onclick="openCredits()"
-            >
-                Hakkında
-            </button>
-
-        </section>
-
-    </main>
-
-
-    <!-- =====================================================
-         ÜLKE SEÇİM EKRANI
-         ===================================================== -->
-
-    <section id="countrySelect">
-
-        <header class="country-select-header">
-
-            <button
-                type="button"
-                class="screen-back-button"
-                onclick="returnToMainMenu()"
-            >
-                ← Ana Menü
-            </button>
-
-            <div>
-
-                <p class="screen-eyebrow">
-                    1 Ocak 1936
-                </p>
-
-                <h1>
-                    Ülkeni Seç
-                </h1>
-
-                <p class="country-select-description">
-                    Bir devlet seç ve dünyanın kaderini yeniden yaz.
-                </p>
-
-            </div>
-
-        </header>
-
-
-        <div class="countries">
-
-            <button
-                type="button"
-                onclick="chooseCountry('Türkiye')"
-            >
-                <span class="country-button-flag">🇹🇷</span>
-
-                <span class="country-button-info">
-                    <strong>Türkiye</strong>
-                    <small>Yükselen Bölgesel Güç</small>
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                onclick="chooseCountry('Almanya')"
-            >
-                <span class="country-button-flag">🇩🇪</span>
-
-                <span class="country-button-info">
-                    <strong>Almanya</strong>
-                    <small>Endüstriyel Güç</small>
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                onclick="chooseCountry('Fransa')"
-            >
-                <span class="country-button-flag">🇫🇷</span>
-
-                <span class="country-button-info">
-                    <strong>Fransa</strong>
-                    <small>Avrupa Cumhuriyeti</small>
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                onclick="chooseCountry('İtalya')"
-            >
-                <span class="country-button-flag">🇮🇹</span>
-
-                <span class="country-button-info">
-                    <strong>İtalya</strong>
-                    <small>Akdeniz Gücü</small>
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                onclick="chooseCountry('İngiltere')"
-            >
-                <span class="country-button-flag">🇬🇧</span>
-
-                <span class="country-button-info">
-                    <strong>Birleşik Krallık</strong>
-                    <small>Küresel İmparatorluk</small>
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                onclick="chooseCountry('Rusya')"
-            >
-                <span class="country-button-flag">🇷🇺</span>
-
-                <span class="country-button-info">
-                    <strong>Sovyetler Birliği</strong>
-                    <small>Kara Ordusu Devi</small>
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                onclick="chooseCountry('Amerika')"
-            >
-                <span class="country-button-flag">🇺🇸</span>
-
-                <span class="country-button-info">
-                    <strong>Amerika Birleşik Devletleri</strong>
-                    <small>Ekonomik Dev</small>
-                </span>
-            </button>
-
-
-            <button
-                type="button"
-                onclick="chooseCountry('Japonya')"
-            >
-                <span class="country-button-flag">🇯🇵</span>
-
-                <span class="country-button-info">
-                    <strong>Japonya</strong>
-                    <small>Pasifik Gücü</small>
-                </span>
-            </button>
-
+      <main class="map-section">
+        <div class="map-toolbar">
+          <button type="button" class="active" data-map-mode="political">Siyasi</button>
+          <button type="button" data-map-mode="economy">Ekonomi</button>
+          <button type="button" data-map-mode="military">Askerî</button>
+          <button type="button" data-map-mode="diplomacy">Diplomasi</button>
         </div>
 
-    </section>
-
-
-    <!-- =====================================================
-         ÜLKE ONAY EKRANI
-         JavaScript bu alanı dolduracak
-         ===================================================== -->
-
-    <section id="countryConfirmation">
-
-        <button
-            type="button"
-            class="screen-back-button confirmation-back"
-            onclick="returnToCountrySelection()"
-        >
-            ← Ülke Seçimine Dön
-        </button>
-
-        <div id="confirmationContent"></div>
-
-    </section>
-
-
-    <!-- =====================================================
-         ANA OYUN EKRANI
-         ===================================================== -->
-
-    <section id="gameScreen">
-
-        <!-- ÜST BİLGİ ÇUBUĞU -->
-
-        <header class="game-topbar">
-
-            <div class="topbar-country">
-
-                <span
-                    id="playerFlag"
-                    class="topbar-flag"
-                >
-                    🇹🇷
-                </span>
-
-                <div>
-                    <strong id="playerCountryName">
-                        Türkiye
-                    </strong>
-
-                    <small id="playerGovernment">
-                        Cumhuriyet
-                    </small>
-                </div>
-
-            </div>
-
-
-            <div class="topbar-resources">
-
-                <div class="resource-item">
-                    <span>💰</span>
-
-                    <div>
-                        <small>Hazine</small>
-                        <strong id="treasuryValue">120</strong>
-                    </div>
-                </div>
-
-
-                <div class="resource-item">
-                    <span>🏭</span>
-
-                    <div>
-                        <small>Sanayi</small>
-                        <strong id="industryValue">32</strong>
-                    </div>
-                </div>
-
-
-                <div class="resource-item">
-                    <span>👥</span>
-
-                    <div>
-                        <small>Nüfus</small>
-                        <strong id="populationValue">17M</strong>
-                    </div>
-                </div>
-
-
-                <div class="resource-item">
-                    <span>⚔️</span>
-
-                    <div>
-                        <small>Ordu</small>
-                        <strong id="armyValue">38</strong>
-                    </div>
-                </div>
-
-
-                <div class="resource-item">
-                    <span>⭐</span>
-
-                    <div>
-                        <small>İstikrar</small>
-                        <strong id="stabilityValue">72%</strong>
-                    </div>
-                </div>
-
-            </div>
-
-
-            <button
-                type="button"
-                class="game-menu-button"
-                onclick="toggleGameMenu()"
-                aria-label="Oyun menüsü"
-            >
-                ☰
-            </button>
-
-        </header>
-
-
-        <!-- ANA OYUN ALANI -->
-
-        <div class="game-layout">
-
-            <!-- SOL ÜLKE PANELİ -->
-
-            <aside class="nation-panel">
-
-                <div class="leader-portrait">
-
-                    <span id="leaderSymbol">
-                        ★
-                    </span>
-
-                </div>
-
-
-                <p class="panel-label">
-                    Devlet Başkanı
-                </p>
-
-                <h2 id="leaderName">
-                    Mustafa Kemal Atatürk
-                </h2>
-
-
-                <div class="nation-stat-list">
-
-                    <div>
-                        <span>Başkent</span>
-                        <strong id="capitalName">Ankara</strong>
-                    </div>
-
-                    <div>
-                        <span>Rejim</span>
-                        <strong id="governmentName">Cumhuriyet</strong>
-                    </div>
-
-                    <div>
-                        <span>İdeoloji</span>
-                        <strong id="ideologyName">Ulusal Kalkınma</strong>
-                    </div>
-
-                    <div>
-                        <span>Diplomatik Güç</span>
-                        <strong id="diplomacyPower">45</strong>
-                    </div>
-
-                </div>
-
-
-                <div class="national-focus">
-
-                    <span>Ulusal Hedef</span>
-
-                    <strong id="nationalFocus">
-                        Sanayileşme Hamlesi
-                    </strong>
-
-                    <div class="focus-progress">
-                        <span id="focusProgress"></span>
-                    </div>
-
-                    <small id="focusDays">
-                        70 gün kaldı
-                    </small>
-
-                </div>
-
-            </aside>
-
-
-            <!-- HARİTA ALANI -->
-
-            <main class="map-section">
-
-                <div class="map-toolbar">
-
-                    <button
-                        type="button"
-                        class="active"
-                        onclick="changeMapMode('political', this)"
-                    >
-                        Siyasi
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="changeMapMode('economy', this)"
-                    >
-                        Ekonomi
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="changeMapMode('military', this)"
-                    >
-                        Askerî
-                    </button>
-
-                    <button
-                        type="button"
-                        onclick="changeMapMode('diplomacy', this)"
-                    >
-                        Diplomasi
-                    </button>
-
-                </div>
-
-<div
-    id="worldMap"
-    class="world-map political-mode svg-map-container"
->
-
-    <div class="svg-map-controls">
-
-        <button
-            id="zoomInBtn"
-            type="button"
-        >
-            +
-        </button>
-
-        <button
-            id="zoomOutBtn"
-            type="button"
-        >
-            −
-        </button>
-
-        <button
-            id="resetMapBtn"
-            type="button"
-        >
-            Sıfırla
-        </button>
-
-    </div>
-
-    <div
-        id="mapViewport"
-        class="map-viewport"
-    >
-
-        <div
-            id="mapTransformLayer"
-            class="map-transform-layer"
-        >
-
-            <object
-                id="europeMapObject"
-                class="europe-map-object"
-                data="images/europe-map.svg"
-                type="image/svg+xml"
-            >
+        <div id="worldMap" class="world-map political-mode">
+          <div class="svg-map-controls">
+            <button id="zoomInBtn" type="button">+</button>
+            <button id="zoomOutBtn" type="button">−</button>
+            <button id="resetMapBtn" type="button">Sıfırla</button>
+          </div>
+          <div id="mapViewport" class="map-viewport">
+            <div id="mapTransformLayer" class="map-transform-layer">
+              <object id="europeMapObject" class="europe-map-object" data="images/europe-map.svg" type="image/svg+xml">
                 Harita yüklenemedi.
-            </object>
-
-        </div>
-
-    </div>
-
-    <div
-        id="mapStatus"
-        class="map-status"
-    >
-        Avrupa haritası yükleniyor...
-    </div>
-
-</div>
-       
-
-
-                <div class="map-information-bar">
-
-                    <div>
-                        <small>Seçili Bölge</small>
-                        <strong id="selectedRegionName">Ankara</strong>
-                    </div>
-
-                    <div>
-                        <small>Sahibi</small>
-                        <strong id="selectedRegionOwner">Türkiye</strong>
-                    </div>
-
-                    <div>
-                        <small>Nüfus</small>
-                        <strong id="selectedRegionPopulation">1.2M</strong>
-                    </div>
-
-                    <div>
-                        <small>Sanayi</small>
-                        <strong id="selectedRegionIndustry">8</strong>
-                    </div>
-
-                    <button
-                        type="button"
-                        onclick="openRegionPanel()"
-                    >
-                        Bölgeyi Aç
-                    </button>
-
-                </div>
-
-            </main>
-
-
-            <!-- SAĞ OLAY PANELİ -->
-
-            <aside class="event-panel">
-
-                <header class="panel-header">
-
-                    <div>
-                        <small>Dünya Gündemi</small>
-                        <h2>Haberler</h2>
-                    </div>
-
-                    <span>1936</span>
-
-                </header>
-
-
-                <div
-                    id="eventList"
-                    class="event-list"
-                >
-
-                    <article class="event-card important">
-
-                        <span class="event-icon">
-                            🌍
-                        </span>
-
-                        <div>
-                            <small>1 Ocak 1936</small>
-
-                            <h3>
-                                Yeni Bir Dönem Başlıyor
-                            </h3>
-
-                            <p>
-                                Dünya devletleri büyük bir siyasi
-                                dönüşümün eşiğinde.
-                            </p>
-                        </div>
-
-                    </article>
-
-
-                    <article class="event-card">
-
-                        <span class="event-icon">
-                            🏭
-                        </span>
-
-                        <div>
-                            <small>Ekonomi</small>
-
-                            <h3>
-                                Sanayi Raporu
-                            </h3>
-
-                            <p>
-                                Ülkenin üretim kapasitesi
-                                değerlendirilmeye hazır.
-                            </p>
-                        </div>
-
-                    </article>
-
-
-                    <article class="event-card">
-
-                        <span class="event-icon">
-                            🤝
-                        </span>
-
-                        <div>
-                            <small>Diplomasi</small>
-
-                            <h3>
-                                Komşu Devletler
-                            </h3>
-
-                            <p>
-                                İlk diplomatik temaslar
-                                kurulabilir.
-                            </p>
-                        </div>
-
-                    </article>
-
-                </div>
-
-            </aside>
-
-        </div>
-
-
-        <!-- ALT OYUN ÇUBUĞU -->
-
-        <footer class="game-bottombar">
-
-            <nav class="game-navigation">
-
-                <button
-                    type="button"
-                    onclick="openGamePanel('government')"
-                >
-                    <span>🏛️</span>
-                    Hükûmet
-                </button>
-
-                <button
-                    type="button"
-                    onclick="openGamePanel('economy')"
-                >
-                    <span>💰</span>
-                    Ekonomi
-                </button>
-
-                <button
-                    type="button"
-                    onclick="openGamePanel('industry')"
-                >
-                    <span>🏭</span>
-                    Üretim
-                </button>
-
-                <button
-                    type="button"
-                    onclick="openGamePanel('military')"
-                >
-                    <span>⚔️</span>
-                    Ordu
-                </button>
-
-                <button
-                    type="button"
-                    onclick="openGamePanel('diplomacy')"
-                >
-                    <span>🤝</span>
-                    Diplomasi
-                </button>
-
-                <button
-                    type="button"
-                    onclick="openGamePanel('research')"
-                >
-                    <span>🔬</span>
-                    Araştırma
-                </button>
-
-            </nav>
-
-
-            <div class="time-controls">
-
-                <button
-                    type="button"
-                    onclick="setGameSpeed(0)"
-                    aria-label="Oyunu duraklat"
-                >
-                    ⏸
-                </button>
-
-                <button
-                    type="button"
-                    onclick="setGameSpeed(1)"
-                >
-                    1×
-                </button>
-
-                <button
-                    type="button"
-                    onclick="setGameSpeed(2)"
-                >
-                    2×
-                </button>
-
-                <button
-                    type="button"
-                    onclick="setGameSpeed(3)"
-                >
-                    3×
-                </button>
-
-
-                <div class="game-date">
-
-                    <small id="gameDayName">
-                        Çarşamba
-                    </small>
-
-                    <strong id="gameDate">
-                        1 Ocak 1936
-                    </strong>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    class="next-turn-button"
-                    onclick="nextTurn()"
-                >
-                    Sonraki Gün
-                </button>
-
+              </object>
             </div>
-
-        </footer>
-
-    </section>
-
-
-    <!-- =====================================================
-         OYUN İÇİ AÇILIR PANEL
-         ===================================================== -->
-
-    <section
-        id="modalOverlay"
-        class="modal-overlay"
-        onclick="closeModalFromOverlay(event)"
-    >
-
-        <div
-            id="gameModal"
-            class="game-modal"
-        >
-
-            <button
-                type="button"
-                class="modal-close-button"
-                onclick="closeGameModal()"
-                aria-label="Pencereyi kapat"
-            >
-                ×
-            </button>
-
-            <div id="modalContent"></div>
-
+          </div>
+          <div id="mapStatus" class="map-status">Avrupa haritası yükleniyor...</div>
         </div>
 
-    </section>
-
-
-    <!-- =====================================================
-         DURAKLATMA MENÜSÜ
-         ===================================================== -->
-
-    <section id="pauseMenu">
-
-        <div class="pause-menu-box">
-
-            <p>Oyun Duraklatıldı</p>
-
-            <h2>
-                IMPERA
-            </h2>
-
-            <button
-                type="button"
-                onclick="resumeGame()"
-            >
-                Oyuna Dön
-            </button>
-
-            <button
-                type="button"
-                onclick="saveGame()"
-            >
-                Oyunu Kaydet
-            </button>
-
-            <button
-                type="button"
-                onclick="returnToMainMenuFromGame()"
-            >
-                Ana Menüye Dön
-            </button>
-
+        <div class="map-information-bar">
+          <div><small>Seçili Bölge</small><strong id="selectedRegionName">Ankara</strong></div>
+          <div><small>Sahibi</small><strong id="selectedRegionOwner">Türkiye</strong></div>
+          <div><small>Nüfus</small><strong id="selectedRegionPopulation">1.2M</strong></div>
+          <div><small>Sanayi</small><strong id="selectedRegionIndustry">8</strong></div>
+          <button type="button" data-action="region-panel">Bölgeyi Aç</button>
         </div>
+      </main>
 
-    </section>
+      <aside class="event-panel">
+        <header class="panel-header"><div><small>Dünya Gündemi</small><h2>Haberler</h2></div><span>1936</span></header>
+        <div id="eventList" class="event-list"></div>
+      </aside>
+    </div>
 
+    <footer class="game-bottombar">
+      <nav class="game-navigation">
+        <button type="button" data-panel="government"><span>🏛️</span>Hükûmet</button>
+        <button type="button" data-panel="economy"><span>💰</span>Ekonomi</button>
+        <button type="button" data-panel="industry"><span>🏭</span>Üretim</button>
+        <button type="button" data-panel="military"><span>⚔️</span>Ordu</button>
+        <button type="button" data-panel="diplomacy"><span>🤝</span>Diplomasi</button>
+        <button type="button" data-panel="research"><span>🔬</span>Araştırma</button>
+      </nav>
 
-    <script src="js/script.js"></script>
+      <div class="time-controls">
+        <button type="button" data-speed="0">⏸</button>
+        <button type="button" data-speed="1">1×</button>
+        <button type="button" data-speed="2">2×</button>
+        <button type="button" data-speed="3">3×</button>
+        <div class="game-date"><small id="gameDayName">Çarşamba</small><strong id="gameDate">1 Ocak 1936</strong></div>
+        <button type="button" class="next-turn-button" data-action="next-turn">Sonraki Gün</button>
+      </div>
+    </footer>
+  </section>
 
+  <section id="modalOverlay" class="modal-overlay">
+    <div id="gameModal" class="game-modal">
+      <button type="button" class="modal-close-button" data-action="close-modal" aria-label="Pencereyi kapat">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </section>
+
+  <section id="pauseMenu">
+    <div class="pause-menu-box">
+      <p>Oyun Duraklatıldı</p>
+      <h2>IMPERA</h2>
+      <button type="button" data-action="resume">Oyuna Dön</button>
+      <button type="button" data-action="save-game">Oyunu Kaydet</button>
+      <button type="button" data-action="main-menu-from-game">Ana Menüye Dön</button>
+    </div>
+  </section>
+
+  <script src="js/countries.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/script.js"></script>
 </body>
-
 </html>
