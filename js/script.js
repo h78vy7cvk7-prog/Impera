@@ -1366,133 +1366,200 @@ let mapScale = 1;
 let mapX = 0;
 let mapY = 0;
 
-let dragging = false;
-let dragStartX = 0;
-let dragStartY = 0;
-
 function initializeSVGMap() {
-
     const viewport = document.getElementById("mapViewport");
     const layer = document.getElementById("mapTransformLayer");
     const status = document.getElementById("mapStatus");
+    const svgObject = document.getElementById("europeMapObject");
 
-    if (!viewport || !layer) return;
+    if (!viewport || !layer) {
+        console.warn("Harita alanı bulunamadı.");
+        return;
+    }
 
     function updateTransform() {
         layer.style.transform =
             `translate(${mapX}px, ${mapY}px) scale(${mapScale})`;
+
+        layer.style.transformOrigin = "center center";
     }
 
-    document.getElementById("zoomInBtn")?.addEventListener("click", () => {
-        mapScale += 0.15;
+    function bindMapDragging(dragSurface) {
+        if (!dragSurface) return;
 
-        if (mapScale > 3)
-            mapScale = 3;
+        let isDragging = false;
+        let hasMoved = false;
 
-        updateTransform();
-    });
+        let pointerStartX = 0;
+        let pointerStartY = 0;
 
-    document.getElementById("zoomOutBtn")?.addEventListener("click", () => {
+        let mapStartX = 0;
+        let mapStartY = 0;
 
-        mapScale -= 0.15;
+        dragSurface.style.touchAction = "none";
+        dragSurface.style.cursor = "grab";
 
-        if (mapScale < 0.6)
-            mapScale = 0.6;
+        dragSurface.addEventListener("pointerdown", (event) => {
+            isDragging = true;
+            hasMoved = false;
 
-        updateTransform();
+            pointerStartX = event.clientX;
+            pointerStartY = event.clientY;
 
-    });
+            mapStartX = mapX;
+            mapStartY = mapY;
 
-    document.getElementById("resetMapBtn")?.addEventListener("click", () => {
+            dragSurface.style.cursor = "grabbing";
 
-        mapScale = 1;
-        mapX = 0;
-        mapY = 0;
+            if (dragSurface.setPointerCapture) {
+                try {
+                    dragSurface.setPointerCapture(event.pointerId);
+                } catch (error) {
+                    console.warn(error);
+                }
+            }
+        });
 
-        updateTransform();
+        dragSurface.addEventListener("pointermove", (event) => {
+            if (!isDragging) return;
 
-    });
+            const deltaX =
+                event.clientX - pointerStartX;
 
+            const deltaY =
+                event.clientY - pointerStartY;
 
-    viewport.addEventListener("pointerdown", e => {
+            if (
+                Math.abs(deltaX) > 5 ||
+                Math.abs(deltaY) > 5
+            ) {
+                hasMoved = true;
+            }
 
-        dragging = true;
+            mapX = mapStartX + deltaX;
+            mapY = mapStartY + deltaY;
 
-        dragStartX = e.clientX - mapX;
-        dragStartY = e.clientY - mapY;
+            updateTransform();
 
-        viewport.classList.add("dragging");
+            if (event.cancelable) {
+                event.preventDefault();
+            }
+        });
 
-    });
+        function stopDragging(event) {
+            if (!isDragging) return;
 
+            isDragging = false;
 
-    window.addEventListener("pointermove", e => {
+            dragSurface.style.cursor = "grab";
 
-        if (!dragging) return;
+            if (
+                dragSurface.releasePointerCapture &&
+                dragSurface.hasPointerCapture &&
+                dragSurface.hasPointerCapture(event.pointerId)
+            ) {
+                try {
+                    dragSurface.releasePointerCapture(
+                        event.pointerId
+                    );
+                } catch (error) {
+                    console.warn(error);
+                }
+            }
 
-        mapX = e.clientX - dragStartX;
-        mapY = e.clientY - dragStartY;
+            if (hasMoved) {
+                if (event.cancelable) {
+                    event.preventDefault();
+                }
 
-        updateTransform();
+                event.stopPropagation();
+            }
+        }
 
-    });
+        dragSurface.addEventListener(
+            "pointerup",
+            stopDragging
+        );
 
+        dragSurface.addEventListener(
+            "pointercancel",
+            stopDragging
+        );
+    }
 
-    window.addEventListener("pointerup", () => {
+    document
+        .getElementById("zoomInBtn")
+        ?.addEventListener("click", () => {
+            mapScale += 0.15;
 
-        dragging = false;
+            if (mapScale > 3) {
+                mapScale = 3;
+            }
 
-        viewport.classList.remove("dragging");
+            updateTransform();
+        });
 
-    });
+    document
+        .getElementById("zoomOutBtn")
+        ?.addEventListener("click", () => {
+            mapScale -= 0.15;
 
+            if (mapScale < 0.6) {
+                mapScale = 0.6;
+            }
 
-    const svgObject =
-        document.getElementById("europeMapObject");
+            updateTransform();
+        });
+
+    document
+        .getElementById("resetMapBtn")
+        ?.addEventListener("click", () => {
+            mapScale = 1;
+            mapX = 0;
+            mapY = 0;
+
+            updateTransform();
+        });
+
+    bindMapDragging(viewport);
 
     if (svgObject) {
-
         svgObject.addEventListener("load", () => {
+            const svgDocument =
+                svgObject.contentDocument;
+
+            const svgRoot =
+                svgDocument?.documentElement;
+
+            if (svgRoot) {
+                bindMapDragging(svgRoot);
+            }
 
             if (status) {
-
                 status.textContent =
                     "Avrupa haritası yüklendi.";
 
                 status.classList.add("loaded");
-
             }
-
         });
 
         svgObject.addEventListener("error", () => {
-
             if (status) {
-
                 status.textContent =
                     "Harita yüklenemedi.";
 
                 status.classList.add("error");
-
             }
-
         });
-
     }
 
     updateTransform();
-
 }
-
 
 /* Sayfa tamamen açılınca */
 
 window.addEventListener("load", () => {
-
-    setTimeout(() => {
-
+    window.setTimeout(() => {
         initializeSVGMap();
-
     }, 300);
-
 });
