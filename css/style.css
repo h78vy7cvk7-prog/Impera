@@ -3054,3 +3054,557 @@ button.map-country {
         display: block;
     }
 }
+/* =========================================================
+   IMPERA — Alpha 0.3.1
+   iPhone ve Mobil Harita Düzeltmesi
+   ========================================================= */
+
+@media (max-width: 820px) {
+
+    /* Ana oyun ekranı */
+
+    #gameScreen {
+        min-height: 100dvh;
+
+        padding-top:
+            calc(112px + env(safe-area-inset-top));
+
+        padding-bottom:
+            calc(72px + env(safe-area-inset-bottom));
+
+        overflow-x: hidden;
+    }
+
+
+    /* =====================================================
+       ÜST KAYNAK ÇUBUĞU
+       ===================================================== */
+
+    .game-topbar {
+        grid-template-columns: 1fr 52px;
+        grid-template-rows: 54px 58px;
+
+        min-height:
+            calc(112px + env(safe-area-inset-top));
+    }
+
+    .topbar-country {
+        display: flex;
+
+        grid-column: 1;
+        grid-row: 1;
+
+        min-width: 0;
+        padding: 7px 12px;
+    }
+
+    .topbar-country strong {
+        display: block;
+
+        max-width: 220px;
+
+        overflow: hidden;
+
+        font-size: 0.87rem;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .topbar-country small {
+        font-size: 0.55rem;
+    }
+
+    .topbar-flag {
+        width: 38px;
+        height: 38px;
+
+        font-size: 1.35rem;
+    }
+
+    .game-menu-button {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .topbar-resources {
+        grid-column: 1 / -1;
+        grid-row: 2;
+
+        display: flex;
+
+        width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .topbar-resources::-webkit-scrollbar {
+        display: none;
+    }
+
+    .resource-item {
+        flex: 0 0 112px;
+
+        min-width: 112px;
+        min-height: 58px;
+
+        padding: 7px 10px;
+    }
+
+    .resource-item > span {
+        font-size: 1.18rem;
+    }
+
+    .resource-item small {
+        font-size: 0.52rem;
+    }
+
+    .resource-item strong {
+        font-size: 0.82rem;
+    }
+
+
+    /* =====================================================
+       HARİTA ÜST BUTONLARI
+       ===================================================== */
+
+    .map-section {
+        display: grid;
+        grid-template-rows: 48px 1fr 64px;
+
+        width: 100%;
+        min-width: 0;
+    }
+
+    .map-toolbar {
+        gap: 6px;
+
+        width: 100%;
+
+        padding: 7px 8px;
+
+        overflow-x: auto;
+
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .map-toolbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .map-toolbar button {
+        flex: 1 0 auto;
+
+        min-width: 92px;
+        min-height: 34px;
+
+        padding: 6px 11px;
+
+        font-size: 0.61rem;
+    }
+
+
+    /* =====================================================
+       HARİTA ALANI
+       ===================================================== */
+
+    .world-map {
+        width: 100%;
+        min-height: 455px;
+
+        overflow: hidden;
+    }
+
+    .map-country {
+        border-radius: 7px;
+
+        font-size: 0.55rem;
+    }
+
+    .map-country span {
+        font-size: 0.85rem;
+    }
+
+    .map-country strong {
+        max-width: 100%;
+
+        overflow: hidden;
+
+        font-size: 0.52rem;
+        line-height: 1.15;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    /* İngiltere */
+
+    .country-uk {
+        left: 8%;
+        top: 21%;
+
+        width: 55px;
+        height: 67px;
+
+        transform: rotate(-7deg);
+    }
+
+
+    /* Fransa */
+
+    .country-france {
+        left: 21%;
+        top: 40%;
+
+        width: 76px;
+        height: 76px;
+    }
+
+
+    /* Almanya */
+
+    .country-germany {
+        left: 42%;
+        top: 30%;
+
+        width: 64px;
+        height: 67px;
+    }
+
+
+    /* İtalya */
+
+    .country-italy {
+        left: 48%;
+        top: 54%;
+
+        width: 43px;
+        height: 87px;
+
+        transform: rotate(9deg);
+    }
+
+
+    /* Türkiye */
+
+    .country-turkey {
+        left: 65%;
+        top: 57%;
+
+        width: 102px;
+        height: 55px;
+    }
+
+
+    /* Sovyetler Birliği */
+
+    .country-russia {
+        left: 59%;
+        top: 13%;
+
+        width: 144px;
+        height: 104px;
+    }
+
+
+    /* İspanya */
+
+    .country-spain {
+        left: 8%;
+        top: 59%;
+
+        width: 77px;
+        height: 59px;
+    }
+
+
+    /* Polonya */
+
+    .country-poland {
+        left: 51%;
+        top: 39%;
+
+        width: 57px;
+        height: 52px;
+    }
+
+
+    /* Balkanlar */
+
+    .country-balkans {
+        left: 55%;
+        top: 53%;
+
+        width: 62px;
+        height: 51px;
+    }
+
+
+    /* Kuzey Afrika */
+
+    .country-north-africa {
+        left: 22%;
+        top: 79%;
+
+        width: 164px;
+        height: 58px;
+    }
+
+
+    /* Harita üzerindeki deniz yazıları */
+
+    .map-ocean-label {
+        font-size: 0.48rem;
+        letter-spacing: 0.12em;
+    }
+
+    .atlantic-label {
+        left: 3%;
+        top: 48%;
+    }
+
+    .mediterranean-label {
+        left: 35%;
+        top: 73%;
+    }
+
+    .blacksea-label {
+        left: 69%;
+        top: 48%;
+    }
+
+
+    /* Seçili bölge işareti */
+
+    #selectedProvinceMarker {
+        font-size: 0.8rem;
+    }
+
+
+    /* =====================================================
+       ALT BÖLGE BİLGİ ÇUBUĞU
+       ===================================================== */
+
+    .map-information-bar {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 118px;
+        grid-template-columns: none;
+
+        width: 100%;
+        min-height: 64px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .map-information-bar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .map-information-bar > div {
+        min-width: 118px;
+        min-height: 64px;
+
+        padding: 8px 12px;
+    }
+
+    .map-information-bar small {
+        font-size: 0.5rem;
+    }
+
+    .map-information-bar strong {
+        font-size: 0.7rem;
+    }
+
+    .map-information-bar button {
+        grid-column: auto;
+
+        width: 118px;
+        min-width: 118px;
+        min-height: 64px;
+
+        font-size: 0.59rem;
+    }
+
+
+    /* =====================================================
+       ALT OYUN MENÜSÜ
+       ===================================================== */
+
+    .game-bottombar {
+        min-height:
+            calc(72px + env(safe-area-inset-bottom));
+    }
+
+    .game-navigation {
+        display: flex;
+
+        width: 100%;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .game-navigation::-webkit-scrollbar {
+        display: none;
+    }
+
+    .game-navigation button {
+        flex: 0 0 86px;
+
+        min-width: 86px;
+        min-height: 72px;
+
+        padding: 7px 4px;
+
+        font-size: 0.54rem;
+    }
+
+    .game-navigation button span {
+        font-size: 1.3rem;
+    }
+
+
+    /* Sol ve sağ masaüstü panelleri kapat */
+
+    .nation-panel,
+    .event-panel {
+        display: none;
+    }
+
+
+    /* Modal pencereler */
+
+    .modal-overlay {
+        padding:
+            max(14px, env(safe-area-inset-top))
+            12px
+            max(14px, env(safe-area-inset-bottom));
+    }
+
+    .game-modal {
+        width: 100%;
+        max-height: 82dvh;
+
+        padding: 25px 17px;
+    }
+
+    #modalContent h2 {
+        padding-right: 35px;
+
+        font-size: 1.3rem;
+    }
+}
+
+
+/* =========================================================
+   KÜÇÜK iPHONE EKRANI
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+    .world-map {
+        min-height: 430px;
+    }
+
+    .map-toolbar button {
+        min-width: 88px;
+
+        font-size: 0.58rem;
+    }
+
+    .country-uk {
+        left: 7%;
+        top: 20%;
+
+        width: 51px;
+        height: 62px;
+    }
+
+    .country-france {
+        left: 20%;
+        top: 40%;
+
+        width: 71px;
+        height: 72px;
+    }
+
+    .country-germany {
+        left: 41%;
+        top: 30%;
+
+        width: 60px;
+        height: 63px;
+    }
+
+    .country-italy {
+        left: 48%;
+        top: 54%;
+
+        width: 40px;
+        height: 81px;
+    }
+
+    .country-turkey {
+        left: 64%;
+        top: 57%;
+
+        width: 96px;
+        height: 52px;
+    }
+
+    .country-russia {
+        left: 58%;
+        top: 14%;
+
+        width: 137px;
+        height: 98px;
+    }
+
+    .country-spain {
+        left: 7%;
+        top: 59%;
+
+        width: 73px;
+        height: 56px;
+    }
+
+    .country-poland {
+        left: 51%;
+        top: 39%;
+
+        width: 53px;
+        height: 49px;
+    }
+
+    .country-balkans {
+        left: 54%;
+        top: 53%;
+
+        width: 59px;
+        height: 48px;
+    }
+
+    .country-north-africa {
+        left: 21%;
+        top: 79%;
+
+        width: 155px;
+        height: 55px;
+    }
+}
