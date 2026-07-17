@@ -3801,3 +3801,18 @@ button.map-country {
         padding: 5px;
     }
 }
+.map-viewport {
+    overflow: hidden;
+    touch-action: none;
+    cursor: grab;
+}
+
+.map-viewport.dragging {
+    cursor: grabbing;
+}
+
+.europe-map-object {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
