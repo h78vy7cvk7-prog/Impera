@@ -466,113 +466,68 @@
 
                 </div>
 
+<div
+    id="worldMap"
+    class="world-map political-mode svg-map-container"
+>
 
-                <div
-                    id="worldMap"
-                    class="world-map political-mode"
-                >
+    <div class="svg-map-controls">
 
-                    <div class="map-ocean-label atlantic-label">
-                        Atlas Okyanusu
-                    </div>
+        <button
+            id="zoomInBtn"
+            type="button"
+        >
+            +
+        </button>
 
-                    <div class="map-ocean-label mediterranean-label">
-                        Akdeniz
-                    </div>
+        <button
+            id="zoomOutBtn"
+            type="button"
+        >
+            −
+        </button>
 
-                    <div class="map-ocean-label blacksea-label">
-                        Karadeniz
-                    </div>
+        <button
+            id="resetMapBtn"
+            type="button"
+        >
+            Sıfırla
+        </button>
 
+    </div>
 
-                    <button
-                        type="button"
-                        class="map-country country-uk"
-                        data-country="İngiltere"
-                        onclick="selectMapCountry('İngiltere')"
-                    >
-                        <span>🇬🇧</span>
-                        <strong>BK</strong>
-                    </button>
+    <div
+        id="mapViewport"
+        class="map-viewport"
+    >
 
+        <div
+            id="mapTransformLayer"
+            class="map-transform-layer"
+        >
 
-                    <button
-                        type="button"
-                        class="map-country country-france"
-                        data-country="Fransa"
-                        onclick="selectMapCountry('Fransa')"
-                    >
-                        <span>🇫🇷</span>
-                        <strong>Fransa</strong>
-                    </button>
+            <object
+                id="europeMapObject"
+                class="europe-map-object"
+                data="images/europe-map.svg"
+                type="image/svg+xml"
+            >
+                Harita yüklenemedi.
+            </object>
 
+        </div>
 
-                    <button
-                        type="button"
-                        class="map-country country-germany"
-                        data-country="Almanya"
-                        onclick="selectMapCountry('Almanya')"
-                    >
-                        <span>🇩🇪</span>
-                        <strong>Almanya</strong>
-                    </button>
+    </div>
 
+    <div
+        id="mapStatus"
+        class="map-status"
+    >
+        Avrupa haritası yükleniyor...
+    </div>
 
-                    <button
-                        type="button"
-                        class="map-country country-italy"
-                        data-country="İtalya"
-                        onclick="selectMapCountry('İtalya')"
-                    >
-                        <span>🇮🇹</span>
-                        <strong>İtalya</strong>
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="map-country country-turkey"
-                        data-country="Türkiye"
-                        onclick="selectMapCountry('Türkiye')"
-                    >
-                        <span>🇹🇷</span>
-                        <strong>Türkiye</strong>
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="map-country country-russia"
-                        data-country="Rusya"
-                        onclick="selectMapCountry('Rusya')"
-                    >
-                        <span>🇷🇺</span>
-                        <strong>SSCB</strong>
-                    </button>
-
-
-                    <div class="map-country country-spain neutral-country">
-                        <strong>İspanya</strong>
-                    </div>
-
-                    <div class="map-country country-poland neutral-country">
-                        <strong>Polonya</strong>
-                    </div>
-
-                    <div class="map-country country-balkans neutral-country">
-                        <strong>Balkanlar</strong>
-                    </div>
-
-                    <div class="map-country country-north-africa neutral-country">
-                        <strong>Kuzey Afrika</strong>
-                    </div>
-
-
-                    <div id="selectedProvinceMarker">
-                        <span>◆</span>
-                    </div>
-
-                </div>
+</div>
+       
 
 
                 <div class="map-information-bar">
