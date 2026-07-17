@@ -1615,26 +1615,121 @@ function initializeSVGMap() {
 
     bindMapDragging(viewport);
 
-    if (svgObject) {
-        svgObject.addEventListener("load", () => {
-            const svgDocument =
-                svgObject.contentDocument;
+   svgObject.addEventListener("load", () => {
+    const svgDocument = svgObject.contentDocument;
+    const svgRoot = svgDocument?.documentElement;
 
-            const svgRoot =
-                svgDocument?.documentElement;
+    if (!svgDocument || !svgRoot) {
+        console.warn("SVG içeriğine ulaşılamadı.");
+        return;
+    }
 
-            if (svgRoot) {
-                bindMapDragging(svgRoot);
+    bindMapDragging(svgRoot);
+
+    const svgCountries =
+        svgDocument.querySelectorAll(".map-country-svg");
+
+    console.log(
+        `${svgCountries.length} ülke bulundu.`
+    );
+
+    svgCountries.forEach((countryPath) => {
+        countryPath.addEventListener("click", () => {
+            const countryName =
+                countryPath.dataset.country ||
+                "Bilinmeyen Ülke";
+
+            const capital =
+                countryPath.dataset.capital || "—";
+
+            svgCountries.forEach((item) => {
+                item.classList.remove(
+                    "selected-country-svg"
+                );
+            });
+
+            countryPath.classList.add(
+                "selected-country-svg"
+            );
+
+            const aliases = {
+                "Birleşik Krallık": "İngiltere",
+                "Sovyetler Birliği": "Rusya"
+            };
+
+            const countryKey =
+                aliases[countryName] || countryName;
+
+            const countryData =
+                countries[countryKey];
+
+            gameState.selectedMapCountry =
+                countryKey;
+
+            const regionName =
+                document.getElementById(
+                    "selectedRegionName"
+                );
+
+            const regionOwner =
+                document.getElementById(
+                    "selectedRegionOwner"
+                );
+
+            const regionPopulation =
+                document.getElementById(
+                    "selectedRegionPopulation"
+                );
+
+            const regionIndustry =
+                document.getElementById(
+                    "selectedRegionIndustry"
+                );
+
+            if (regionName) {
+                regionName.textContent = capital;
             }
 
-            if (status) {
-                status.textContent =
-                    "Avrupa haritası yüklendi.";
-
-                status.classList.add("loaded");
+            if (regionOwner) {
+                regionOwner.textContent = countryName;
             }
+
+            if (regionPopulation) {
+                regionPopulation.textContent =
+                    countryData
+                        ? countryData.populationText
+                        : "Veri hazırlanıyor";
+            }
+
+            if (regionIndustry) {
+                regionIndustry.textContent =
+                    countryData
+                        ? countryData.industry
+                        : "—";
+            }
+
+            const marker =
+                document.getElementById(
+                    "selectedProvinceMarker"
+                );
+
+            if (marker) {
+                marker.style.display = "none";
+            }
+
+            console.log(
+                `${countryName} seçildi.`
+            );
         });
+    });
 
+    if (status) {
+        status.textContent =
+            "Avrupa haritası yüklendi.";
+
+        status.classList.add("loaded");
+    }
+});
         svgObject.addEventListener("error", () => {
             if (status) {
                 status.textContent =
