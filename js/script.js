@@ -1359,6 +1359,98 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 });
 /* =====================================================
+   SVG ÜLKE SEÇİM SİSTEMİ
+===================================================== */
+
+function findGameCountryBySVGName(svgCountryName) {
+    const countryAliases = {
+        "Birleşik Krallık": "İngiltere",
+        "Sovyetler Birliği": "Rusya"
+    };
+
+    const countryKey =
+        countryAliases[svgCountryName] || svgCountryName;
+
+    return {
+        key: countryKey,
+        data: countries[countryKey] || null
+    };
+}
+
+function bindSVGCountrySelection(svgObject) {
+    const svgDocument = svgObject.contentDocument;
+
+    if (!svgDocument) {
+        console.warn("SVG belge içeriğine ulaşılamadı.");
+        return;
+    }
+
+    const svgCountries =
+        svgDocument.querySelectorAll(".map-country-svg");
+
+    svgCountries.forEach((countryPath) => {
+        countryPath.addEventListener("click", () => {
+            const svgCountryName =
+                countryPath.dataset.country || "Bilinmeyen Ülke";
+
+            const svgCapital =
+                countryPath.dataset.capital || "—";
+
+            svgCountries.forEach((item) => {
+                item.classList.remove("selected-country-svg");
+            });
+
+            countryPath.classList.add(
+                "selected-country-svg"
+            );
+
+            const matchedCountry =
+                findGameCountryBySVGName(svgCountryName);
+
+            const countryData = matchedCountry.data;
+
+            gameState.selectedMapCountry =
+                matchedCountry.key;
+
+            document.getElementById(
+                "selectedRegionName"
+            ).textContent = svgCapital;
+
+            document.getElementById(
+                "selectedRegionOwner"
+            ).textContent = svgCountryName;
+
+            document.getElementById(
+                "selectedRegionPopulation"
+            ).textContent = countryData
+                ? countryData.populationText
+                : "Hazırlanıyor";
+
+            document.getElementById(
+                "selectedRegionIndustry"
+            ).textContent = countryData
+                ? countryData.industry
+                : "—";
+
+            const marker = document.getElementById(
+                "selectedProvinceMarker"
+            );
+
+            if (marker) {
+                marker.style.display = "none";
+            }
+
+            console.log(
+                `${svgCountryName} seçildi. Başkent: ${svgCapital}`
+            );
+        });
+    });
+
+    console.log(
+        `${svgCountries.length} SVG ülkesi tıklama sistemine bağlandı.`
+    );
+}
+/* =====================================================
    SVG HARİTA SİSTEMİ
 ===================================================== */
 
